@@ -9,6 +9,7 @@ import { Button } from './ui/button';
 import Wallet from './ui/wallet';
 import Account from './account';
 import { useBalanceContext } from '@/hooks/useBalanceContext';
+import { useCountUp } from '@/hooks/useCountUp';
 
 function Login() {
   const { disconnect, connected } = useWallet();
@@ -16,6 +17,8 @@ function Login() {
   const { setVisible } = useWalletModal();
   const [walletLoading, setWalletLoading] = useState(true);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+  const animatedBalance = useCountUp(totalBalance, 1000, isSheetOpen);
 
   useEffect(() => {
     if (connected !== undefined) {
@@ -57,7 +60,7 @@ function Login() {
 
           <div className="flex flex-col items-center flex-grow">
             <SheetTitle className="font-light text-base text-[#9592A0]">Total balance</SheetTitle>
-            <div className="mt-2 text-white_primary text-4xl font-semibold">${connected ? totalBalance?.toFixed(1) : '0.0'}</div>
+            <div className="mt-2 text-white_primary text-4xl font-semibold">${connected ? animatedBalance?.toFixed(2) : '0.0'}</div>
           </div>
 
           {connected && (
